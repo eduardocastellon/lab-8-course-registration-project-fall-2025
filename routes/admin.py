@@ -1,7 +1,8 @@
 from flask import Flask, request, redirect, jsonify, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import JSON
-from database import db
+from vars.database import db
+from routes.utils.functions import checkUniqueness
 
 admin_blueprint = Blueprint('admin', __name__)
 
@@ -15,7 +16,7 @@ class Admin(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "username": self.username, "first_name": self.first_name, "password": self.password, "last_name": self.last_name, "status": self.status}
-    
+
 
 #GET
 @admin_blueprint.route('/admin', methods=['GET'])
@@ -34,29 +35,27 @@ def GetAdminById(id):
 def Create():
     x = request.json
     data = Admin(username=x['username'], password=x['password'], first_name=x['first_name'], last_name=x['last_name'])
-    repeatedUser = db.session.query(Admin.query.filter_by(username=data.username).exists()).scalar()
+    #DEFINE BOOL ARRAY
+    repeatedUser = checkUniqueness(data.username)
     if not repeatedUser:
         db.session.add(data)
         db.session.commit()
         return jsonify(data.to_dict())
     else:
-        return {'message': 'username already exists'}
+        return {'message': "username already exists"}
 
 #PUT
 @admin_blueprint.route('/admin/<int:id>', methods=['PUT'])
 def Change(id):
     updateData = Admin.query.get_or_404(id)
-    x = request.json
     #OVERWRITE DATA
-    #CHECK IF USERNAME EXISTS
-    repeatedUser = db.session.query(Admin.query.filter_by(username=updateData.username).exists()).scalar()
+    repeatedUser = checkUniqueness(updateData.username)
     if not repeatedUser:
-        updateData.username = x.get('username', updateData.username)
-        updateData.password = x.get('password', updateData.password)
+        db.session.add(updateData)
         db.session.commit()
         return jsonify(updateData.to_dict())
     else:
-        return {'message': 'username already exists'}
+        return {'message': "username already exists"}
 
 #DELETE STUDENT
 @admin_blueprint.route('/admin/<int:id>', methods=['DELETE'])

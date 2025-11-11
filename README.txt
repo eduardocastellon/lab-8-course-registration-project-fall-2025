@@ -1,5 +1,16 @@
 TLDR (TOO LONG, DIDN'T READ):
-4 main paths:
+
+1 path for login:
+http://localhost:5207/login
+METHOD: POST
+{
+    "username": "test1234"
+    "password": "password1234"
+}
+
+When logging in, you will use the path provided above. This path will check if the username and password match any in the database
+
+4 main paths where data is stored:
 1.	http://localhost:5207/courses
 2.	http://localhost:5207/students
 3.	http://localhost:5207/instructors

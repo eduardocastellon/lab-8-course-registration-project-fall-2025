@@ -1,9 +1,11 @@
 from flask import Flask, request, redirect, jsonify, Blueprint
-from database import db
+from vars.database import db
 from vars.port import port_number
 from sqlalchemy.types import JSON
 from sqlalchemy.ext.mutable import MutableDict
 import requests
+from routes.utils.functions import checkUniqueness
+from routes.courses import updateClassSizeUp, updateClassSizeDown
 
 students_blueprint = Blueprint('students', __name__)
 
@@ -18,7 +20,7 @@ class Students(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "status": self.status, "username":self.username, "password":self.password, "first_name": self.first_name, "last_name": self.last_name, "registered_courses": self.registered_courses}
-    
+
 
 #GET
 @students_blueprint.route('/students', methods=['GET'])
@@ -38,7 +40,7 @@ def Create():
     x = request.json
     data = Students(username=x['username'], password=x['password'], first_name=x['first_name'], last_name=x['last_name'])
     #CHECK IF USERNAME IS UNIQUE
-    repeatedUser = db.session.query(Students.query.filter_by(username=data.username).exists()).scalar()
+    repeatedUser = checkUniqueness(data.username)
     if not repeatedUser:
         db.session.add(data)
         db.session.commit()
@@ -53,11 +55,9 @@ def Change(id):
     updateData = Students.query.get_or_404(id)
     x = request.json
     #OVERWRITE DATA
-    #CHECK IF USERNAME IS UNIQUE
-    repeatedUser = db.session.query(Students.query.filter_by(username=updateData.username).exists()).scalar()
+    repeatedUser = checkUniqueness(updateData.username)
     if not repeatedUser:
-        updateData.username = x.get('username', updateData.username)
-        updateData.password = x.get('password', updateData.password)
+        db.session.add(updateData)
         db.session.commit()
         return jsonify(updateData.to_dict())
     else:
@@ -72,7 +72,7 @@ def AddStudentToCourse(id, unique_id):
     else:
         student.registered_courses.update({unique_id: 0})
         db.session.commit()
-        requests.put(f"http://localhost:{port_number}/courses/{unique_id}/size")
+        updateClassSizeUp(unique_id)
         print({'message': 'student added to course'})
         return jsonify(student.to_dict())
     
@@ -93,7 +93,7 @@ def RemoveStudentFromCourse(id, unique_id):
     if unique_id in student.registered_courses:
         del student.registered_courses[unique_id]
         db.session.commit()
-        requests.delete(f"http://localhost:{port_number}/courses/{unique_id}/size")
+        updateClassSizeDown(unique_id)
         return jsonify(student.to_dict())
     else:
         return jsonify({'message': 'Student is not in course'})

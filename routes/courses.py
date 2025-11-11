@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, jsonify, Blueprint
 from sqlalchemy.types import JSON
-from database import db
+from vars.database import db
 import random
 import string
 
@@ -112,7 +112,7 @@ def removeInstructor(uid, name):
     else:
         return jsonify({'message': f'Error: {name} cannot be removed since {name} was never teaching this course to begin with'})
 
-#DELETE STUDENT
+#DELETE COURSE
 @courses_blueprint.route('/courses/<int:id>', methods=['DELETE'])
 def Delete(id):
     remove = Courses.query.get_or_404(id)

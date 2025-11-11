@@ -1,11 +1,12 @@
 from flask import Flask, request, redirect, jsonify, Blueprint
 from flask_cors import CORS
-from database import db
+from vars.database import db
 from vars.port import port_number
 from routes.courses import courses_blueprint
 from routes.students import students_blueprint
 from routes.instructors import instructors_blueprint
 from routes.admin import admin_blueprint
+from routes.login import login_blueprint
 
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ CORS(app)
 #http://localhost:{port_number}/courses
 #http://localhost:{port_number}/admin
 
+app.register_blueprint(login_blueprint)
 app.register_blueprint(courses_blueprint)
 app.register_blueprint(students_blueprint)
 app.register_blueprint(instructors_blueprint)

@@ -2,9 +2,11 @@ from flask import Flask, request, redirect, jsonify, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import JSON
 from sqlalchemy.ext.mutable import MutableList
-from database import db
+from vars.database import db
 from vars.port import port_number
 import requests
+from routes.utils.functions import checkUniqueness
+from routes.courses import addInstructor, removeInstructor
 
 instructors_blueprint = Blueprint('instructors', __name__)
 
@@ -19,7 +21,6 @@ class Instructors(db.Model):
 
     def to_dict(self):
         return {"id": self.id, "status": self.status, "username": self.username, "password": self.password, "first_name": self.first_name, "last_name": self.last_name, "assigned_courses": self.assigned_courses}
-    
 
 #GET
 @instructors_blueprint.route('/instructors', methods=['GET'])
@@ -38,7 +39,8 @@ def GetInstructorById(id):
 def Create():
     x = request.json
     data = Instructors(username=x['username'], password=x['password'], first_name=x['first_name'], last_name=x['last_name'])
-    repeatedUser = db.session.query(Instructors.query.filter_by(username=data.username).exists()).scalar()
+    #ARRAY OF BOOLS TO STORE VALUES FROM EACH USERNAME CHECK
+    repeatedUser = checkUniqueness(data.username)
     if not repeatedUser:
         db.session.add(data)
         db.session.commit()
@@ -52,11 +54,10 @@ def Change(id):
     updateData = Instructors.query.get_or_404(id)
     x = request.json
     #OVERWRITE DATA
-    #CHECK IF USERNAME IS ALREADY EXISTS
-    repeatedUser = db.session.query(Instructors.query.filter_by(username=updateData.username).exists()).scalar()
+    #ARRAY OF BOOLS TO STORE VALUES FROM EACH USERNAME CHECK
+    repeatedUser = checkUniqueness(updateData.username)
     if not repeatedUser:
-        updateData.username = x.get('username', updateData.username)
-        updateData.password = x.get('password', updateData.password)
+        db.session.add(updateData)
         db.session.commit()
         return jsonify(updateData.to_dict())
     else:
@@ -73,7 +74,7 @@ def AddStudentToCourse(id, unique_id):
         instructor.assigned_courses.append(unique_id)
         db.session.commit()
         name = instructor.first_name + " " + instructor.last_name
-        requests.put(f"http://localhost:{port_number}/courses/{unique_id}/instructor/{name}")
+        addInstructor(unique_id, name)
         print({'message': 'Instructor is assigned to course'})
         return jsonify(instructor.to_dict())
 
@@ -85,7 +86,7 @@ def RemoveStudentFromCourse(id, unique_id):
         instructor.assigned_courses.remove(unique_id)
         db.session.commit()
         name = instructor.first_name + " " + instructor.last_name
-        requests.delete(f"http://localhost:{port_number}/courses/{unique_id}/instructor/{name}")
+        removeInstructor(unique_id, name)
         return jsonify(instructor.to_dict())
     else:
         return jsonify({'message': 'Instructor is not teaching course'})
