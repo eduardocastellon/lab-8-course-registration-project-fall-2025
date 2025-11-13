@@ -16,6 +16,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 CORS(app)
 
+#render login page
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("login.html")
+
 ###############################################################
 #           PATHS
 ###############################################################
