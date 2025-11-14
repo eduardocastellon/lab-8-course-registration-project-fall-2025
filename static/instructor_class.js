@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         signout.addEventListener("click", (e)=>{
             e.preventDefault();
             localStorage.removeItem("instructor_id");
-            window.location.href=" /";
+            window.location.href="/";
         });
     }
     const backBtn = document.getElementById("back");
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     alert("enter a valid number");
                 }
                 try{
-                    const res = await fetch(`/students/${student.id}/courses/${courseUid}/grades/${newGrade}`,{method:"PUT"});
+                    const res = await fetch(`/students/${student.id}/courses/${courseUid}/grades/${newGrade}`,{ method : "PUT" });
                     if(!res.ok){
                         const data = await res.json().catch(() => ({}));
                         console.error("Grade update failed:", data);
