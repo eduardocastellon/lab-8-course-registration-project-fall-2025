@@ -89,6 +89,7 @@ table{
     background: transparent;
     overflow: hidden;
     border-radius: 6px;
+    background: var(--bg);
 }
 
 thead th{
@@ -134,4 +135,20 @@ tbody td:last-child{
 }
 .icon-btn:active{
     transform: translateY(1px);
+}
+
+/*additional styles for instructor*/
+.tabs_instructor{
+    display: grid;
+    grid-template-columns: 2fr;
+    border-bottom: 2px solid var(--grey);
+}
+
+.instructor-page .topbar {
+    margin-top: 30px;
+    align-items: flex-start;
+}
+
+.instructor-page .title {
+    margin-top: 40px;
 }
