@@ -4,7 +4,7 @@ from sqlalchemy.types import JSON
 from vars.database import db
 from routes.utils.functions import checkUniqueness
 
-admin_blueprint = Blueprint('admin', __name__)
+admin_blueprint = Blueprint('admin_api', __name__)
 
 class Admin(db.Model):
     id = db.Column(db.Integer, primary_key=True) #INT FOR ID
