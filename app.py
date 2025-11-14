@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, jsonify, Blueprint
+from flask import Flask, request, redirect, jsonify, Blueprint, render_template, url_for
 from flask_cors import CORS
 from vars.database import db
 from vars.port import port_number
@@ -21,6 +21,9 @@ CORS(app)
 def index():
     return render_template("login.html")
 
+@app.route("/student")
+def student_dashboard():
+    return render_template("student.html")
 ###############################################################
 #           PATHS
 ###############################################################
