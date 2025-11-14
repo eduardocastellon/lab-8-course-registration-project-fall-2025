@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const instructorId= localStorage.getItem("instruction_id");
+    const instructorId= localStorage.getItem("instructor_id");
     if(!instructorId){
         window.location.href="/";
         return;
