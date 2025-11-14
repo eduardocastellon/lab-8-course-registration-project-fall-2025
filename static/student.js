@@ -1,6 +1,6 @@
 //get student id to see whos logged in else go back to sign in
 document.addEventListener("DOMContentLoaded", async()=>{
-    const studentID = localStorage.getItem("student_id");
+    const studentId = localStorage.getItem("student_id");
     if(!studentId){
         window.location.href="/";
         return;
@@ -26,15 +26,15 @@ document.addEventListener("DOMContentLoaded", async()=>{
         tab.addEventListener("click", ()=>{
             const targetId=tab.getAttribute("data-target");
             tabs.forEach((t)=> t.classList.remove("active"));
-            tab.classList.add("Active");
+            tab.classList.add("active");
 
             tabContents.forEach((content)=>{
                 if(content.id === targetId){
-                    content.computedStyleMap.display="black";
+                    content.style.display="block";
                     content.classList.add("active");
                 }
                 else{
-                    content.computedStyleMap.display="none";
+                    content.style.display="none";
                     content.classList.remove("active");
                 }
             });
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async()=>{
     try{
         //get student and courses info
         const [studentRes, coursesRes] = await Promise.all([
-            fetch(`/student/${studentID}`), fetch("/courses"),
+            fetch(`/students/${studentId}`), fetch("/courses"),
         ]);
 
         const studentData=await studentRes.json();
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async()=>{
                     <td>${enrolledText}</td>`;
                 
                 row.appendChild(btnCell);
-                addTbody.appendChild(btnCell);
+                addTbody.appendChild(row);
             });
         }
     }
