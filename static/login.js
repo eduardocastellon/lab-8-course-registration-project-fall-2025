@@ -31,6 +31,13 @@ document.addEventListener("DOMContentLoaded", () =>{
                     localStorage.setItem("student_id", data.id);
                     window.location.href="/student";
                 }
+                else if(data.status === "TEACH"){
+                    localStorage.setItem("instructor_id", data.id)
+                    window.location.href="/instructor";
+                }
+                else if(data.status === "ADMIN"){
+                    window.location.href="/admin";
+                }
                 else{
                     alert("not a student account")
                 }
