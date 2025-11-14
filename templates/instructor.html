@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='student.css') }}">
+</head>
+
+<body class="instructor-page">
+<div class="page-frame">
+
+    <header class="topbar">
+        <div id="welcome">Welcome!</div>
+        <div class="title">cool University</div>
+        <a href="#" class="signout">Sign out</a>
+    </header>
+
+    <section class="panel">
+        <div class="tabs_instructor">
+            <div class="tab active">Your Courses</div>
+        </div>
+
+        <div class="content">
+            <table class="margin-down">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Instructor</th>
+                        <th>Time</th>
+                        <th>Students Enrolled</th>
+                    </tr>
+                </thead>
+                <tbody id="instructor-courses-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='instructor.js') }}"></script>
+</body>
+</html>
