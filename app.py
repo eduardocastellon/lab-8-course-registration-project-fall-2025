@@ -13,6 +13,9 @@ from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 
+#avoids error
+app.secret_key = 'super secret key'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///records.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
