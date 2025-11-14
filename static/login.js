@@ -25,8 +25,15 @@ document.addEventListener("DOMContentLoaded", () =>{
             });
             const data = await res.json();
             
-            //check if 200 code if so show message login success
+            //check if 200 code go to student login if a student
             if(res.ok){
+                if(data.status === "STUDT"){
+                    localStorage.setItem("student_id", data.id);
+                    window.location.href="/student";
+                }
+                else{
+                    alert("not a student account")
+                }
                 console.log("Login succcess:", data);
                 errorlogin.style.color = "rgba(12, 244, 12, 1)";
                 errorlogin.textContent = "Login successful";
