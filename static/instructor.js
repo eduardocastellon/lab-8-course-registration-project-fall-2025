@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${course.registered_students}/${course.capacity}</td>`;
             
             row.addEventListener("click", () => {
-                window.location.href=`/instructor/courses/${course.unique_id}`;
+                window.location.href=`/instructor/course/${course.unique_id}`;
             });
             tbody.appendChild(row);
         });
