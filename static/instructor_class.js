@@ -1,9 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const instructorId=localStorage.getItem("instructor_id");
-    if(!instructorId){
-        console.warn("no instructor_id in local storage");
-    }
-
     const signout = document.querySelector(".signout");
     if(signout){
         signout.addEventListener("click", (e)=>{
@@ -75,9 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         alert(data.message || "Error updating grade.");
                     }
                     else{
-                        console.log(
-                            `updated grade for student ${student.id} in course ${courseUid} to ${newGrade}`
-                        );
+                        console.log(`updated grade for student ${student.id} in course ${courseUid} to ${newGrade}`);
                     }
                 }
                 catch(err){
