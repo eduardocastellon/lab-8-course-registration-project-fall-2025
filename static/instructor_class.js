@@ -71,12 +71,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             gradeInput.addEventListener("change", async () => {
                 const newGrade=parseInt(gradeInput.value, 10);
                 
-                //if input invalid send message
+                //checks if invalid input like letters
                 if(Number.isNaN(newGrade)){
                     alert("enter a valid number");
+                    return;
+                }
+                //makes sure the grade is within range
+                if(newGrade > 100 || newGrade < 0){
+                    alert("enter a number between 1-100 for the grade");
+                    return;
                 }
                 try{
                     //put request to update grades
+                    //    /students/<id>/courses/<unique_id>/grades/<value>
                     const res = await fetch(`/students/${student.id}/courses/${courseUid}/grades/${newGrade}`,{ method : "PUT" });
                     
                     //if reponse is not good print error
