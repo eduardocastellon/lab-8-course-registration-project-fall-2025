@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>cool University</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='student.css') }}">
+</head>
+<body>
+    <div class="page_frame">
+        <div class="topbar">
+            <div id="welcome">Welcome!</div>
+            <a href="#" class="signout">Sign out</a>
+        </div>
+
+        <div class="title">cool University</div>
+
+        <section class="panel">
+            <div class="tabs">
+                <div class="tab active" data-target="user_courses">Your Courses</div>
+                <div class="tab" data-target="add_courses">Add Courses</div>
+            </div>
+
+            <!--users coursees-->
+            <div class="content">
+                <div id="user_courses" class="tab-content active">
+                    <table aria-label="Courses">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Teacher</th>
+                                <th>Time</th>
+                                <th>Students Enrolled</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users_courses_row"></tbody>
+                    </table>
+                </div>
+
+
+                <!--courses for user to add-->
+                <div id="add_courses" class="tab-content" style="display:none;">
+                    <table aria-label="All Courses">
+                        <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Teacher</th>
+                                <th>Time</th>
+                                <th>Students Enrolled</th>
+                                <th>Add</th>
+                            </tr>
+                        </thead>
+                        <tbody id="add_courses_row"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="{{ url_for('static', filename='student.js') }}"></script>
+</body>
+</html>
