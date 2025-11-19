@@ -91,3 +91,33 @@ button:hover{
     box-shadow: 0 6px 18px rgba(9, 176, 222, 0.962); 
 }
 button:active{ transform: translateY(1px); }
+
+
+.sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    box-shadow:
+        0 0 10px currentColor,
+        0 0 20px currentColor,
+        0 0 30px currentColor;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+      /* bright glow */
+    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    animation: sparkle-explode 700ms ease-out forwards;
+}
+
+@keyframes sparkle-explode {
+    0% {
+        opacity: 1;
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) scale(0.3);
+        box-shadow: 0 0 0 currentColor;
+    }
+}
