@@ -33,21 +33,27 @@ def LoginCheck(username, password):
 
     # Helper function to check password (handles both hashed and plain text for migration)
     def verify_password(stored_password, provided_password):
-        # If password starts with pbkdf2:sha256, it's hashed
-        if stored_password.startswith('pbkdf2:sha256:'):
+        # Check if password is hashed (supports multiple hash formats)
+        is_hashed = (stored_password.startswith('pbkdf2:sha256:') or 
+                     stored_password.startswith('scrypt:'))
+        
+        if is_hashed:
+            # Password is already hashed - just verify, don't change it
             return check_password_hash(stored_password, provided_password)
         else:
             # Plain text password (for backward compatibility)
             if stored_password == provided_password:
-                # Auto-upgrade to hashed password
+                # Password matches - will auto-upgrade to hash after verification
                 return True
             return False
 
     # Check instructor
     if instructor:
         if verify_password(instructor.password, password):
-            # Auto-upgrade plain text password to hash
-            if not instructor.password.startswith('pbkdf2:sha256:'):
+            # Auto-upgrade plain text password to hash (only if not already hashed)
+            is_already_hashed = (instructor.password.startswith('pbkdf2:sha256:') or 
+                               instructor.password.startswith('scrypt:'))
+            if not is_already_hashed:
                 instructor.password = generate_password_hash(password)
                 db.session.commit()
             return jsonify(instructor.to_dict())
@@ -55,8 +61,10 @@ def LoginCheck(username, password):
     # Check student
     if student:
         if verify_password(student.password, password):
-            # Auto-upgrade plain text password to hash
-            if not student.password.startswith('pbkdf2:sha256:'):
+            # Auto-upgrade plain text password to hash (only if not already hashed)
+            is_already_hashed = (student.password.startswith('pbkdf2:sha256:') or 
+                               student.password.startswith('scrypt:'))
+            if not is_already_hashed:
                 student.password = generate_password_hash(password)
                 db.session.commit()
             return jsonify(student.to_dict())
@@ -64,8 +72,10 @@ def LoginCheck(username, password):
     # Check admin
     if admin:
         if verify_password(admin.password, password):
-            # Auto-upgrade plain text password to hash
-            if not admin.password.startswith('pbkdf2:sha256:'):
+            # Auto-upgrade plain text password to hash (only if not already hashed)
+            is_already_hashed = (admin.password.startswith('pbkdf2:sha256:') or 
+                               admin.password.startswith('scrypt:'))
+            if not is_already_hashed:
                 admin.password = generate_password_hash(password)
                 db.session.commit()
             return jsonify(admin.to_dict())
