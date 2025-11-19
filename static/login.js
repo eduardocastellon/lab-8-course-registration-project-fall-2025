@@ -56,3 +56,45 @@ document.addEventListener("DOMContentLoaded", () =>{
         
     });
 });
+const sparkle_amount = 10;
+const fly = 80;
+
+//when mouse move create sparkle
+document.addEventListener('mousemove', (e) => {
+    for (let i = 0; i < sparkle_amount; i++) {
+        createSparkle(e.clientX, e.clientY);
+    }
+});
+
+function createSparkle(x, y) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+
+    //color sparkles
+    const hue = Math.floor(Math.random() * 360);
+    sparkle.style.color = `hsl(${hue}, 100%, 70%)`;
+    sparkle.style.background = `hsl(${hue}, 100%, 70%)`;
+
+    //begins on cursor
+    sparkle.style.left = x + 'px';
+    sparkle.style.top = y + 'px';
+
+    //random direction & distance to fly 
+    const angle = Math.random() * Math.PI*2;
+    const distance = Math.random() * fly;
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance;
+
+    //allows the sparks to fly out a little
+    sparkle.style.setProperty('--start-x', '-50%');
+    sparkle.style.setProperty('--start-y', '-50%');
+    sparkle.style.setProperty('--end-x', `calc(-50% + ${dx}px)`);
+    sparkle.style.setProperty('--end-y', `calc(-50% + ${dy}px)`);
+
+    document.body.appendChild(sparkle);
+
+    //remove sparkle
+    setTimeout(() => {
+        sparkle.remove();
+    }, 800);
+}
