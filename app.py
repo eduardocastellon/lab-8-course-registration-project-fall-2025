@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, jsonify, Blueprint, render_template, url_for
+from flask import Flask, request, redirect, jsonify, Blueprint, render_template, url_for, session
 from flask_cors import CORS
 from vars.database import db
 from vars.port import port_number
@@ -10,6 +10,8 @@ from routes.login import login_blueprint
 
 from flask_admin import Admin as FlaskAdmin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.menu import MenuLink
+
 
 app = Flask(__name__)
 
@@ -30,6 +32,7 @@ admin_ui.add_view(ModelView(Students, db.session, endpoint="students_admin"))
 admin_ui.add_view(ModelView(Courses, db.session, endpoint="courses_admin"))
 admin_ui.add_view(ModelView(Instructors, db.session, endpoint="instructors_admin"))
 admin_ui.add_view(ModelView(AdminUser, db.session, endpoint="admin_user"))
+admin_ui.add_link(MenuLink(name="Logout", category=None, url="/admin/logout"))
 
 #render login page
 @app.route("/", methods=["GET"])
@@ -47,6 +50,10 @@ def instructor_dashboard():
 @app.route("/instructor/course/<string:uid>")
 def instructor_course(uid):
     return render_template("instructor_class.html", course_uid=uid)
+@app.route("/admin/logout")
+def admin_logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 ###############################################################
 #           PATHS
