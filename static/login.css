@@ -1,0 +1,123 @@
+
+/* put this in folder called static */
+
+.wrap { 
+    max-width: 820px;
+    margin: 48px auto 0;
+    padding: 0 24px 64px;
+}
+h1{
+    text-align:center;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 8px 0 56px;
+    letter-spacing: .5px;
+}
+:root{
+    --bg:#282824;
+    --text:#f3f7fd;
+    --label:#20304a;
+    --field-border:#5876a5;
+    --btn:#3f6ab3;
+    --btn-hover:#375fa2;
+    --btn-border:#2e4e86;
+    --white:#ffffff;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+    height:100%;
+    margin:0;
+    font-family: cursive;
+    color:var(--text);
+    background:var(--bg);
+}
+.card{
+    background: transparent;
+    border-radius: 16px;
+    margin-right: -60px; 
+}
+
+.form-row{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1px;
+    align-items: center;
+    margin: 36px 0;
+}
+
+label{
+    font-size: clamp(10px, 2.2vw, 28px);
+}
+
+input[type="text"],
+input[type="password"]{
+    margin-left: -100px;
+    width: 50%;
+    font-size: clamp(18px,2.2vw,28px);
+    line-height: 1.3;
+    padding: 12px 14px;
+    border: 2px solid var(--field-border);
+    border-radius: 4px;
+    background: var(--white);
+    color:#33373e;
+    outline: none;
+    background: #dddee0; 
+    box-shadow: 0 6px 18px rgba(15, 149, 206, 0.962); 
+}
+input:focus{
+    box-shadow: 0 0 0 3px rgba(63,106,179,.2);
+}
+
+.actions{
+    display:flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+button{
+    width: min(520px, 100%);
+    font-size: 28px;
+    font-family: cursive;
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 2px solid var(--btn-border);
+    color: #fff;
+    background: var(--btn);
+}
+button:hover{
+    background: var(--btn-hover);
+    background: #111827; 
+    box-shadow: 0 6px 18px rgba(9, 176, 222, 0.962); 
+}
+button:active{ transform: translateY(1px); }
+
+
+.sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    box-shadow:
+        0 0 10px currentColor,
+        0 0 20px currentColor,
+        0 0 30px currentColor;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+      /* bright glow */
+    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    animation: sparkle-explode 700ms ease-out forwards;
+}
+
+@keyframes sparkle-explode {
+    0% {
+        opacity: 1;
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) scale(0.3);
+        box-shadow: 0 0 0 currentColor;
+    }
+}

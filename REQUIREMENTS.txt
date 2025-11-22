@@ -1,0 +1,20 @@
+Upon downloading:
+python3 -m venv venv
+source venv/bin/activate
+
+Then:
+
+pip install flask 
+pip install flask-cors
+pip install flask flask-sqlalchemy
+pip install requests
+pip install flask-admin
+
+Or run this:
+
+pip install \
+    flask \
+    flask-cors \
+    flask-sqlalchemy \
+    requests \
+    flask-admin
