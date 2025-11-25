@@ -1,3 +1,5 @@
+Check out the site here: https://lab-8-course-registration-project-fall.onrender.com/ Wait time will be a few minutes since the service being used requires time for start up
+
 TLDR (TOO LONG, DIDN'T READ):
 
 1 path for login:
